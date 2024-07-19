@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: spring-boot-k8s
-        image: testhello:latest
+        image: pramila188/testhello:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8040
