@@ -22,13 +22,13 @@ pipeline {
             parallel {
                 stage('Clone Java Repo') {
                     steps {
-                        git url: params.JAVA_REPO
+                        git url: params.JAVA_REPO, branch: 'main'
                     }
                 }
                 stage('Clone Python Repo') {
                     steps {
                         dir('python-app') {
-                            git url: params.PYTHON_REPO
+                            git url: params.PYTHON_REPO, branch: 'main'
                         }
                     }
                 }
@@ -68,39 +68,4 @@ pipeline {
         stage('Deploy to Kubernetes') {
             parallel {
                 stage('Deploy Java Application') {
-                    steps {
-                        script {
-                            sh """
-                            kubectl create namespace ${params.JAVA_NAMESPACE} || true
-                            helm upgrade --install java-app helm/java-chart --namespace ${params.JAVA_NAMESPACE} \
-                            --set image.repository=${params.DOCKERHUB_USERNAME}/${params.JAVA_IMAGE_NAME}
-                            """
-                        }
-                    }
-                }
-                stage('Deploy Python Application') {
-                    steps {
-                        script {
-                            dir('python-app') {
-                                sh """
-                                kubectl create namespace ${params.PYTHON_NAMESPACE} || true
-                                helm upgrade --install python-app helm/python-chart --namespace ${params.PYTHON_NAMESPACE} \
-                                --set image.repository=${params.DOCKERHUB_USERNAME}/${params.PYTHON_IMAGE_NAME}
-                                """
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            slackSend channel: '#builds', color: 'good', message: "Build and Deployment of Java and Python applications succeeded."
-        }
-        failure {
-            slackSend channel: '#builds', color: 'danger', message: "Build and Deployment of Java and Python applications failed."
-        }
-    }
-}
+                    steps
