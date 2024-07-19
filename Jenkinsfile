@@ -1,4 +1,5 @@
- pipeline {
+@Library('shared-lib') _
+pipeline {
         agent any
 
         environment {
