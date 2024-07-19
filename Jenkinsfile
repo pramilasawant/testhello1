@@ -37,14 +37,12 @@ pipeline {
 
         stage('Build and Push Docker Images') {
             parallel {
-                stage('Build and Push Java Image') {
-                    steps {
-                        dir('testhello') {
-                            script {
-                                sh 'mvn clean package'
-                                def image = docker.build("${params.DOCKERHUB_USERNAME}/${params.JAVA_IMAGE_NAME}")
-                                docker.withRegistry('', 'dockerhubpwd') {
-                                    image.push()
+               stage('Build and Push Java Image') {
+                  steps {
+                   dir('testhello') { // Navigate to the directory containing the pom.xml file
+                    sh 'mvn clean package'
+                     script {
+                       docker.build("pramila188/testhello").push('latest')
                                 }
                             }
                         }
