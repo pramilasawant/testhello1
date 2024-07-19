@@ -37,13 +37,12 @@ pipeline {
 
         stage('Build and Push Docker Images') {
             parallel {
-               stage('Build and Push Java Image') {
-                  steps {
-                   dir('testhello') { // Navigate to the directory containing the pom.xml file
-                    sh 'mvn clean package'
-                     script {
-                       docker.build("pramila188/testhello").push('latest')
-                                }
+                stage('Build and Push Java Image') {
+                    steps {
+                        dir('testhello') { // Navigate to the directory containing the pom.xml file
+                            sh 'mvn clean package'
+                            script {
+                                docker.build("${params.DOCKERHUB_USERNAME}/${params.JAVA_IMAGE_NAME}").push('latest')
                             }
                         }
                     }
@@ -101,5 +100,4 @@ pipeline {
             slackSend(channel: '#builds', color: 'danger', message: "Build and Deployment of Java and Python applications failed.")
         }
     }
-
-
+}
