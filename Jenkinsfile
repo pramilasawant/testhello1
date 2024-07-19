@@ -40,7 +40,7 @@ pipeline {
                 stage('Build and Push Java Image') {
                     steps {
                         dir('testhello') { // Ensure this directory contains the pom.xml
-                            sh 'sudo mvn clean package'
+                            sh 'mvn clean install'
                             script {
                                 def image = docker.build("${params.DOCKERHUB_USERNAME}/${params.JAVA_IMAGE_NAME}")
                                 docker.withRegistry('', 'dockerhubpwd') {
