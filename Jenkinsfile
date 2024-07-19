@@ -101,5 +101,5 @@ pipeline {
             slackSend(channel: '#builds', color: 'danger', message: "Build and Deployment of Java and Python applications failed.")
         }
     }
-}
-}
+
+
